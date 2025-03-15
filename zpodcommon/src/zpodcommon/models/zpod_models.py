@@ -115,6 +115,28 @@ class ZpodComponent(CommonDatesMixin, ModelBase, table=True):
         nullable=True,
     )
 
+    @property
+    def password(self) -> str | None:
+        return self.zpod.password if self.zpod else None
+
+    @property
+    def ui_username(self) -> str | None:
+        if not self.zpod or not self.component:
+            return None
+        return self.component.get_username(
+            protocol="ui",
+            zpod_domain=self.zpod.domain,
+        )
+
+    @property
+    def ssh_username(self) -> str | None:
+        if not self.zpod or not self.component:
+            return None
+        return self.component.get_username(
+            protocol="ssh",
+            zpod_domain=self.zpod.domain,
+        )
+
     zpod: "Zpod" = Relationship(back_populates="components")
     component: "Component" = Relationship()
 

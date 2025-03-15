@@ -1,5 +1,6 @@
 import json
 from functools import cached_property
+from typing import Literal
 
 from sqlmodel import Field
 
@@ -30,3 +31,41 @@ class Component(CommonDatesMixin, ModelBase, table=True):
 
         # Load component JSON
         return json.load(f)
+
+    def get_username(
+        self,
+        protocol: Literal["ui", "ssh"],
+        zpod_domain: str,
+    ) -> str:
+        """Get the username for this component based on protocol.
+
+        Args:
+            protocol: The protocol to use (ui or ssh)
+            zpod_domain: The domain of the zPod (used for vcsa ui)
+
+        Returns:
+            str: The username to use for this component
+        """
+        if protocol == "ssh":
+            return "root"
+
+        # UI usernames
+        match self.component_name.lower():
+            case "cloudbuilder":
+                return "admin"
+            case "esxi":
+                return "root"
+            case "nsx" | "nsxt" | "nsxv":
+                return "admin"
+            case "vcd":
+                return "administrator"
+            case "vcda":
+                return "admin"
+            case "vcsa":
+                return f"administrator@{zpod_domain}"
+            case "vrli":
+                return "admin"
+            case "vrops":
+                return "admin"
+            case "vyos" | "zbox" | _:
+                return None

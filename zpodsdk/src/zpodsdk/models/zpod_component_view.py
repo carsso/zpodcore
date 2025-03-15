@@ -22,6 +22,9 @@ class ZpodComponentView:
         status (Union[Unset, str]):
         vcpu (Union[None, Unset, int]):
         vmem (Union[None, Unset, int]):
+        ui_username (Union[None, Unset, str]):
+        ssh_username (Union[None, Unset, str]):
+        password (Union[None, Unset, str]):
     """
 
     component: "ComponentView"
@@ -31,6 +34,9 @@ class ZpodComponentView:
     status: Union[Unset, str] = UNSET
     vcpu: Union[None, Unset, int] = UNSET
     vmem: Union[None, Unset, int] = UNSET
+    ui_username: Union[None, Unset, str] = UNSET
+    ssh_username: Union[None, Unset, str] = UNSET
+    password: Union[None, Unset, str] = UNSET
 
     def to_dict(self) -> Dict[str, Any]:
         component = self.component.to_dict()
@@ -67,6 +73,24 @@ class ZpodComponentView:
         else:
             vmem = self.vmem
 
+        ui_username: Union[None, Unset, str]
+        if isinstance(self.ui_username, Unset):
+            ui_username = UNSET
+        else:
+            ui_username = self.ui_username
+
+        ssh_username: Union[None, Unset, str]
+        if isinstance(self.ssh_username, Unset):
+            ssh_username = UNSET
+        else:
+            ssh_username = self.ssh_username
+
+        password: Union[None, Unset, str]
+        if isinstance(self.password, Unset):
+            password = UNSET
+        else:
+            password = self.password
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(
             {
@@ -85,6 +109,12 @@ class ZpodComponentView:
             field_dict["vcpu"] = vcpu
         if vmem is not UNSET:
             field_dict["vmem"] = vmem
+        if ui_username is not UNSET:
+            field_dict["ui_username"] = ui_username
+        if ssh_username is not UNSET:
+            field_dict["ssh_username"] = ssh_username
+        if password is not UNSET:
+            field_dict["password"] = password
 
         return field_dict
 
@@ -142,6 +172,12 @@ class ZpodComponentView:
 
         vmem = _parse_vmem(d.pop("vmem", UNSET))
 
+        ui_username = d.pop("ui_username", UNSET)
+
+        ssh_username = d.pop("ssh_username", UNSET)
+
+        password = d.pop("password", UNSET)
+
         zpod_component_view = cls(
             component=component,
             fqdn=fqdn,
@@ -150,6 +186,9 @@ class ZpodComponentView:
             status=status,
             vcpu=vcpu,
             vmem=vmem,
+            ui_username=ui_username,
+            ssh_username=ssh_username,
+            password=password,
         )
 
         return zpod_component_view
